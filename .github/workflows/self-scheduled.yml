@@ -9,7 +9,7 @@ on:
   push:
     branches:
       - ci_*
-      - framework-agnostic-tokenizers
+      - fix-slow-tests-v2
   repository_dispatch:
   schedule:
     - cron: "0 0 * * *"
