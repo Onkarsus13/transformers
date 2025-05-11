@@ -299,9 +299,6 @@ class ConFiDeNetImageProcessor(BaseImageProcessor):
                 image = self.normalize(
                     image=image, mean=image_mean, std=image_std, input_data_format=input_data_format
                 )
-
-            # depth-pro rescales and normalizes the image before resizing it
-            # uses torch interpolation which requires ChannelDimension.FIRST
             if do_resize:
                 image = to_channel_dimension_format(image, ChannelDimension.FIRST, input_channel_dim=input_data_format)
                 image = self.resize(image=image, size=size, resample=resample)
@@ -375,7 +372,7 @@ class ConFiDeNetImageProcessor(BaseImageProcessor):
             # inverse the depth
             depth = 1.0 / torch.clamp(depth, min=1e-4, max=1e4)
             depth_uint16 = (depth * 1000).clamp(0, 65535).to(torch.uint16)
-
+            
             results.append(
                 {
                     "predicted_depth": depth,
